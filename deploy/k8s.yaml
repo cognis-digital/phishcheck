@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: phishcheck, labels: { app: phishcheck } }
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: phishcheck } }
+  template:
+    metadata: { labels: { app: phishcheck } }
+    spec:
+      containers:
+        - name: phishcheck
+          image: ghcr.io/cognis-digital/phishcheck:latest
+          ports: [{ containerPort: 8000 }]
+          resources:
+            requests: { cpu: "50m", memory: "64Mi" }
+            limits: { cpu: "500m", memory: "256Mi" }
+---
+apiVersion: v1
+kind: Service
+metadata: { name: phishcheck }
+spec:
+  selector: { app: phishcheck }
+  ports: [{ port: 80, targetPort: 8000 }]
