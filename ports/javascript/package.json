@@ -1,0 +1,10 @@
+{
+  "name": "@cognis/phishcheck",
+  "version": "0.2.0",
+  "description": "JavaScript port of phishcheck (Cognis Neural Suite)",
+  "bin": {
+    "phishcheck": "index.js"
+  },
+  "license": "LicenseRef-COCL-1.0",
+  "type": "module"
+}
