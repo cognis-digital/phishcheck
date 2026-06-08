@@ -1,0 +1,22 @@
+From: "PayPal Security" <service@paypa1-billing.gq>
+Return-Path: <bounce@mailer-throwaway.top>
+Reply-To: <recover@paypa1-billing.gq>
+To: customer@example.com
+Subject: Urgent: Verify your account or it will be suspended
+Date: Mon, 08 Jun 2026 09:14:00 -0400
+Authentication-Results: mx.example.com; spf=fail smtp.mailfrom=mailer-throwaway.top; dkim=none; dmarc=fail header.from=paypa1-billing.gq
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+
+Dear Customer,
+
+We detected unusual activity. Your account will be suspended within 24 hours
+unless you verify your identity immediately.
+
+Please confirm your billing information here:
+http://paypal-secure-login.account-verify.xyz/verify?id=8841
+
+Failure to act now will permanently lock your account.
+
+Thank you,
+PayPal Security Team
