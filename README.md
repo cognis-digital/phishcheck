@@ -16,7 +16,7 @@
 </div>
 
 ```bash
-pip install cognis-phishcheck
+pip install "git+https://github.com/cognis-digital/phishcheck.git"
 phishcheck scan .            # → prioritized findings in seconds
 ```
 
@@ -47,7 +47,7 @@ inbox triage
 ## Quick start
 
 ```bash
-pip install cognis-phishcheck
+pip install "git+https://github.com/cognis-digital/phishcheck.git"
 phishcheck --version
 phishcheck scan .                       # scan current project
 phishcheck scan . --format json         # machine-readable
