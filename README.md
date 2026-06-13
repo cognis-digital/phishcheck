@@ -20,6 +20,12 @@ pip install "git+https://github.com/cognis-digital/phishcheck.git"
 phishcheck scan .            # → prioritized findings in seconds
 ```
 
+<!-- cognis:layman:start -->
+## What is this?
+
+phishcheck is a tool that looks at a web link or an email and tells you whether it looks like a phishing attempt — the kind of trick used to steal your password or credit card details. You paste in the suspicious URL or drop in the email file, and it instantly reports a risk score along with exactly which warning signs it found (like a fake brand name in the address, a shady domain extension, or mismatched sender details). It runs entirely on your own computer — no account, no internet connection, no data leaves your machine. It is useful for anyone who needs to quickly triage suspicious links and emails, from individuals checking their inbox to security teams screening messages at scale.
+<!-- cognis:layman:end -->
+
 ## Contents
 
 - [Why phishcheck?](#why) · [Features](#features) · [Quick start](#quick-start) · [Example](#example) · [Architecture](#architecture) · [AI stack](#ai-stack) · [How it compares](#how-it-compares) · [Integrations](#integrations) · [Install anywhere](#install-anywhere) · [Related](#related) · [Contributing](#contributing)
@@ -44,6 +50,42 @@ inbox triage
 <div align="right"><a href="#top">↑ back to top</a></div>
 
 <a name="quick-start"></a>
+<!-- cognis:install:start -->
+## Install
+
+`phishcheck` is source-available (not published to PyPI) — every method below installs
+straight from GitHub. Pick whichever you prefer; the one-line scripts auto-detect
+the best tool available on your machine.
+
+**One-liner (Linux / macOS):**
+```sh
+curl -fsSL https://raw.githubusercontent.com/cognis-digital/phishcheck/HEAD/install.sh | sh
+```
+
+**One-liner (Windows PowerShell):**
+```powershell
+irm https://raw.githubusercontent.com/cognis-digital/phishcheck/HEAD/install.ps1 | iex
+```
+
+**Or install manually — any one of:**
+```sh
+pipx install "git+https://github.com/cognis-digital/phishcheck.git"     # isolated (recommended)
+uv tool install "git+https://github.com/cognis-digital/phishcheck.git"  # uv
+pip install "git+https://github.com/cognis-digital/phishcheck.git"      # pip
+```
+
+**From source:**
+```sh
+git clone https://github.com/cognis-digital/phishcheck.git
+cd phishcheck && pip install .
+```
+
+Then run:
+```sh
+phishcheck --help
+```
+<!-- cognis:install:end -->
+
 ## Quick start
 
 ```bash
