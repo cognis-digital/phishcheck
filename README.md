@@ -20,6 +20,33 @@ pip install cognis-phishcheck
 phishcheck scan .            # → prioritized findings in seconds
 ```
 
+## Usage — step by step
+
+`phishcheck` does defensive phishing-signal scoring for URLs and emails (analysis/triage only — no network calls). Exit codes: `0` clean, `2` suspicious, `3` high-risk, `1` usage/IO error.
+
+1. **Install**:
+   ```bash
+   pip install -e .
+   phishcheck --version
+   ```
+2. **Score a URL** (full URL or bare hostname):
+   ```bash
+   phishcheck url "http://login.paypa1-secure.com/verify"
+   ```
+3. **Score a raw email** from a `.eml` file or stdin:
+   ```bash
+   phishcheck email suspicious.eml
+   cat suspicious.eml | phishcheck email -
+   ```
+4. **Read the output** as JSON (verdict, score, weighted signals):
+   ```bash
+   phishcheck --format json url example.com | jq '.verdict, .score'
+   ```
+5. **Automate in a mail pipeline** — branch on the exit code:
+   ```bash
+   phishcheck email "$msg"; case $? in 3) quarantine;; 2) flag;; esac
+   ```
+
 ## Contents
 
 - [Why phishcheck?](#why) · [Features](#features) · [Quick start](#quick-start) · [Example](#example) · [Architecture](#architecture) · [AI stack](#ai-stack) · [How it compares](#how-it-compares) · [Integrations](#integrations) · [Install anywhere](#install-anywhere) · [Related](#related) · [Contributing](#contributing)
