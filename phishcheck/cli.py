@@ -67,6 +67,9 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     try:
         if args.command == "url":
+            if not args.url.strip():
+                print("error: URL argument must not be blank", file=sys.stderr)
+                return 1
             verdict = score_url(args.url)
         elif args.command == "email":
             if args.path == "-":
@@ -83,6 +86,9 @@ def main(argv: Optional[List[str]] = None) -> int:
             return 1
     except OSError as exc:
         print(f"error: {exc}", file=sys.stderr)
+        return 1
+    except Exception as exc:  # noqa: BLE001
+        print(f"error: unexpected failure — {exc}", file=sys.stderr)
         return 1
 
     _emit(verdict, args.format)

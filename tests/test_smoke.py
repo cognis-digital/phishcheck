@@ -101,5 +101,67 @@ class CliTests(unittest.TestCase):
         self.assertEqual(rc, 0)
 
 
+class HardeningTests(unittest.TestCase):
+    """Edge-case and error-path tests added during production hardening."""
+
+    # --- score_url input validation ---
+
+    def test_score_url_none_raises_typeerror(self):
+        """Non-string input must raise TypeError, not AttributeError."""
+        with self.assertRaises(TypeError):
+            score_url(None)
+
+    def test_score_url_non_string_raises_typeerror(self):
+        with self.assertRaises(TypeError):
+            score_url(42)
+
+    def test_score_url_empty_string_not_clean(self):
+        """An empty URL is unparseable and must not score as clean (score > 0)."""
+        v = score_url("")
+        self.assertGreater(v.score, 0)
+        signal_names = {s[0] for s in v.signals}
+        self.assertIn("unparsable", signal_names)
+
+    # --- score_email input validation ---
+
+    def test_score_email_non_string_raises_typeerror(self):
+        with self.assertRaises(TypeError):
+            score_email(42)
+
+    # --- CLI error paths ---
+
+    def test_cli_missing_file_returns_1(self):
+        """Passing a path to a file that does not exist must return exit code 1."""
+        rc = main(["email", "/nonexistent/__no_such_file__.eml"])
+        self.assertEqual(rc, 1)
+
+    def test_cli_blank_url_returns_1(self):
+        """A blank URL argument must produce exit code 1, not a silent 'clean'."""
+        rc = main(["url", "   "])
+        self.assertEqual(rc, 1)
+
+    def test_cli_empty_email_stdin_returns_1(self):
+        """Empty stdin for the email subcommand must return exit code 1."""
+        old = sys.stdin
+        sys.stdin = io.StringIO("   ")
+        try:
+            rc = main(["email", "-"])
+        finally:
+            sys.stdin = old
+        self.assertEqual(rc, 1)
+
+    def test_cli_json_format_url_output(self):
+        """--format json must produce valid JSON with the expected keys."""
+        import contextlib
+        import json
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            main(["--format", "json", "url", "https://bit.ly/abc"])
+        data = json.loads(buf.getvalue())
+        self.assertIn("verdict", data)
+        self.assertIn("score", data)
+        self.assertIn("signals", data)
+
+
 if __name__ == "__main__":
     unittest.main()

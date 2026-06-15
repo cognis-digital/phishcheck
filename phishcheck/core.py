@@ -149,13 +149,26 @@ def _brand_lookalike(host: str) -> Optional[Tuple[str, str]]:
 
 
 def score_url(url: str) -> Verdict:
-    """Score a single URL for phishing signals. Deterministic, explainable."""
+    """Score a single URL for phishing signals. Deterministic, explainable.
+
+    Raises:
+        TypeError: if *url* is not a string.
+    """
+    if not isinstance(url, str):
+        raise TypeError(f"score_url expects a str, got {type(url).__name__!r}")
     v = Verdict(target=url, score=0, verdict="clean")
     raw = url.strip()
+    if not raw:
+        v.add("unparsable", 20, "URL is empty")
+        return v.finalize()
     if "://" not in raw:
         raw = "http://" + raw  # tolerate bare hostnames
-    parts = urlsplit(raw)
-    host = (parts.hostname or "").lower()
+    try:
+        parts = urlsplit(raw)
+        host = (parts.hostname or "").lower()
+    except ValueError:
+        v.add("unparsable", 20, "URL could not be parsed")
+        return v.finalize()
     if not host:
         v.add("unparsable", 20, "URL has no parseable host")
         return v.finalize()
@@ -267,7 +280,15 @@ def _body_text(msg) -> str:
 
 
 def score_email(raw_email: str) -> Verdict:
-    """Score a raw RFC-822 email for phishing signals (headers + body + URLs)."""
+    """Score a raw RFC-822 email for phishing signals (headers + body + URLs).
+
+    Raises:
+        TypeError: if *raw_email* is not a string.
+    """
+    if not isinstance(raw_email, str):
+        raise TypeError(
+            f"score_email expects a str, got {type(raw_email).__name__!r}"
+        )
     msg = message_from_string(raw_email)
     from_hdr = msg.get("From", "")
     disp, from_addr = parseaddr(from_hdr)
