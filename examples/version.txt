@@ -1,0 +1,3 @@
+$ phishcheck-emit --version
+
+phishcheck 0.1.0

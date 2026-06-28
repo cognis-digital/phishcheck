@@ -20,6 +20,68 @@ pip install cognis-phishcheck
 phishcheck scan .            # → prioritized findings in seconds
 ```
 
+
+<!-- cognis:example:start -->
+## 🔎 Example output
+
+Real, reproducible output from the tool — runs offline:
+
+```console
+$ phishcheck-emit --version
+phishcheck 0.1.0
+```
+
+```console
+$ phishcheck-emit --help
+usage: phishcheck [-h] [--version] [--format {table,json}] {url,email} ...
+
+Defensive phishing-signal scoring for URLs and emails (analysis/triage only,
+no network).
+
+positional arguments:
+  {url,email}
+    url                 score a single URL
+    email               score a raw RFC-822 email
+
+options:
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit
+  --format {table,json}
+                        output format (default: table)
+```
+
+> Blocks above are real `phishcheck` output — reproduce them from a clone.
+
+**Sample result format** _(illustrative values — run on your own data for real findings):_
+
+```
+{
+"phishCheck": {
+"finding": [
+{
+"id": "1234567890",
+"category": "phishing",
+"tags": ["phishing", "email"],
+"name": "Suspicious Email",
+"description": "Email from unknown sender claiming to be a bank",
+"severity": "medium",
+"created_at": "2023-02-20T14:30:00Z"
+},
+{
+"id": "2345678901",
+"category": "phishing",
+"tags": ["phishing", "sms"],
+"name": "Suspicious SMS",
+"description": "SMS from unknown number claiming to be a bank",
+"severity": "high",
+"created_at": "2023-02-20T14:30:01Z"
+}
+]
+}
+```
+
+<!-- cognis:example:end -->
+
 ## Usage — step by step
 
 `phishcheck` does defensive phishing-signal scoring for URLs and emails (analysis/triage only — no network calls). Exit codes: `0` clean, `2` suspicious, `3` high-risk, `1` usage/IO error.

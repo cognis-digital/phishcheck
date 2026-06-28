@@ -1,0 +1,17 @@
+$ phishcheck-emit --help
+
+usage: phishcheck [-h] [--version] [--format {table,json}] {url,email} ...
+
+Defensive phishing-signal scoring for URLs and emails (analysis/triage only,
+no network).
+
+positional arguments:
+  {url,email}
+    url                 score a single URL
+    email               score a raw RFC-822 email
+
+options:
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit
+  --format {table,json}
+                        output format (default: table)
